@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 from model import mobile_vit_small
 
-
 class ConfusionMatrix(object):
 
     def __init__(self, num_classes: int, labels: list):
