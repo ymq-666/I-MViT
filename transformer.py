@@ -5,22 +5,7 @@ from torch import Tensor
 
 
 class MultiHeadAttention(nn.Module):
-    """
-    This layer applies a multi-head self- or cross-attention as described in
-    `Attention is all you need <https://arxiv.org/abs/1706.03762>`_ paper
-
-    Args:
-        embed_dim (int): :math:`C_{in}` from an expected input of size :math:`(N, P, C_{in})`
-        num_heads (int): Number of heads in multi-head attention
-        attn_dropout (float): Attention dropout. Default: 0.0
-        bias (bool): Use bias or not. Default: ``True``
-
-    Shape:
-        - Input: :math:`(N, P, C_{in})` where :math:`N` is batch size, :math:`P` is number of patches,
-        and :math:`C_{in}` is input embedding dim
-        - Output: same shape as the input
-
-    """
+    
 
     def __init__(
         self,
@@ -87,21 +72,7 @@ class MultiHeadAttention(nn.Module):
 
 
 class TransformerEncoder(nn.Module):
-    """
-    This class defines the pre-norm `Transformer encoder <https://arxiv.org/abs/1706.03762>`_
-    Args:
-        embed_dim (int): :math:`C_{in}` from an expected input of size :math:`(N, P, C_{in})`
-        ffn_latent_dim (int): Inner dimension of the FFN
-        num_heads (int) : Number of heads in multi-head attention. Default: 8
-        attn_dropout (float): Dropout rate for attention in multi-head attention. Default: 0.0
-        dropout (float): Dropout rate. Default: 0.0
-        ffn_dropout (float): Dropout between FFN layers. Default: 0.0
-
-    Shape:
-        - Input: :math:`(N, P, C_{in})` where :math:`N` is batch size, :math:`P` is number of patches,
-        and :math:`C_{in}` is input embedding dim
-        - Output: same shape as the input
-    """
+    
 
     def __init__(
         self,
