@@ -10,23 +10,12 @@ from model_config import get_config
 # original code from apple:
 # https://github.com/apple/ml-cvnets/blob/main/cvnets/models/classification/mobilevit.py
 
-
-
 def make_divisible(
     v: Union[float, int],
     divisor: Optional[int] = 8,
     min_value: Optional[Union[float, int]] = None,
 ) -> Union[float, int]:
-    """
-    This function is taken from the original tf repo.
-    It ensures that all layers have a channel number that is divisible by 8
-    It can be seen here:
-    https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet/mobilenet.py
-    :param v:
-    :param divisor:
-    :param min_value:
-    :return:
-    """
+    
     if min_value is None:
         min_value = divisor
     new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
@@ -84,27 +73,6 @@ class DWConv(nn.Module):
 
 
 class ConvLayer(nn.Module):
-    """
-    Applies a 2D convolution over an input
-
-    Args:
-        in_channels (int): :math:`C_{in}` from an expected input of size :math:`(N, C_{in}, H_{in}, W_{in})`
-        out_channels (int): :math:`C_{out}` from an expected output of size :math:`(N, C_{out}, H_{out}, W_{out})`
-        kernel_size (Union[int, Tuple[int, int]]): Kernel size for convolution.
-        stride (Union[int, Tuple[int, int]]): Stride for convolution. Default: 1
-        groups (Optional[int]): Number of groups in convolution. Default: 1
-        bias (Optional[bool]): Use bias. Default: ``False``
-        use_norm (Optional[bool]): Use normalization layer after convolution. Default: ``True``
-        use_act (Optional[bool]): Use activation layer after convolution (or convolution and normalization).
-                                Default: ``True``
-
-    Shape:
-        - Input: :math:`(N, C_{in}, H_{in}, W_{in})`
-        - Output: :math:`(N, C_{out}, H_{out}, W_{out})`
-
-    .. note::
-        For depth-wise convolution, `groups=C_{in}=C_{out}`.
-    """
 
     def __init__(
         self,
@@ -114,8 +82,8 @@ class ConvLayer(nn.Module):
         stride: Optional[Union[int, Tuple[int, int]]] = 1,
         groups: Optional[int] = 1,
         bias: Optional[bool] = False,
-        use_norm: Optional[bool] = True,  # 是否使用BN
-        use_act: Optional[bool] = True,  # 是否使用激活函数
+        use_norm: Optional[bool] = True,  
+        use_act: Optional[bool] = True,  
     ) -> None:
         super().__init__()
 
@@ -162,25 +130,7 @@ class ConvLayer(nn.Module):
 
 
 class InvertedResidual(nn.Module):
-    """
-    This class implements the inverted residual block, as described in `MobileNetv2 <https://arxiv.org/abs/1801.04381>`_ paper
-
-    Args:
-        in_channels (int): :math:`C_{in}` from an expected input of size :math:`(N, C_{in}, H_{in}, W_{in})`
-        out_channels (int): :math:`C_{out}` from an expected output of size :math:`(N, C_{out}, H_{out}, W_{out)`
-        stride (int): Use convolutions with a stride. Default: 1
-        expand_ratio (Union[int, float]): Expand the input channels by this factor in depth-wise conv
-        skip_connection (Optional[bool]): Use skip-connection. Default: True
-
-    Shape:
-        - Input: :math:`(N, C_{in}, H_{in}, W_{in})`
-        - Output: :math:`(N, C_{out}, H_{out}, W_{out})`
-
-    .. note::
-        If `in_channels =! out_channels` and `stride > 1`, we set `skip_connection=False`
-
-    """
-
+   
     def __init__  (  # MV2结构
         self,
         in_channels: int,
@@ -245,25 +195,7 @@ class InvertedResidual(nn.Module):
 
 
 class MobileViTBlock(nn.Module):
-    """
-    This class defines the `MobileViT block <https://arxiv.org/abs/2110.02178?context=cs.LG>`_
-
-    Args:
-        opts: command line arguments
-        in_channels (int): :math:`C_{in}` from an expected input of size :math:`(N, C_{in}, H, W)`
-        transformer_dim (int): Input dimension to the transformer unit
-        ffn_dim (int): Dimension of the FFN block
-        n_transformer_blocks (int): Number of transformer blocks. Default: 2
-        head_dim (int): Head dimension in the multi-head attention. Default: 32
-        attn_dropout (float): Dropout in multi-head attention. Default: 0.0
-        dropout (float): Dropout rate. Default: 0.0
-        ffn_dropout (float): Dropout between FFN layers in transformer. Default: 0.0
-        patch_h (int): Patch height for unfolding operation. Default: 8
-        patch_w (int): Patch width for unfolding operation. Default: 8
-        transformer_norm_layer (Optional[str]): Normalization layer in the transformer block. Default: layer_norm
-        conv_ksize (int): Kernel size to learn local representations in MobileViT block. Default: 3
-        no_fusion (Optional[bool]): Do not combine the input and output feature maps. Default: False
-    """
+   
 
     def __init__(
         self,
@@ -448,9 +380,7 @@ class MobileViTBlock(nn.Module):
         return np.maximum(inx)
 
 class MobileViT(nn.Module):
-    """
-    This class implements the `MobileViT architecture <https://arxiv.org/abs/2110.02178?context=cs.LG>`_
-    """
+   
     def __init__(self, model_cfg: Dict, num_classes: int = 1000):
         super().__init__()
 
