@@ -53,7 +53,7 @@ def main(args):
                                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])}
 
     # Splitting the dataset into K folds
-    n_splits = 
+    n_splits = 5
     kf = KFold(n_splits=n_splits, shuffle=True)
     fold_datasets = []
 
@@ -122,15 +122,13 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--num_classes', type=int, default=)
-    parser.add_argument('--epochs', type=int, default=)
-    parser.add_argument('--batch_size', type=int, default=)
-    parser.add_argument('--lr', type=float, default=)
-    parser.add_argument('--num_workers', type=int, default=)
-    parser.add_argument('--data_path', type=str, default=r" ")
+    parser.add_argument('--num_classes', type=int, default=3)
+    parser.add_argument('--epochs', type=int, default=100)
+    parser.add_argument('--batch_size', type=int, default=16)
+    parser.add_argument('--lr', type=float, default=0.00005)
+    parser.add_argument('--num_workers', type=int, default=8)
+    parser.add_argument('--data_path', type=str, default=r"D:\pycharmproject\YMQ\san")
     parser.add_argument('--weights', type=str, default='')
     parser.add_argument('--device', default='cuda:0', help='device id (i.e. 0 or 0,1 or cpu)')
-
     opt = parser.parse_args()
-
     main(opt)
