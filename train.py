@@ -5,7 +5,6 @@ import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 from my_dataset import MyDataSet
-
 from model import mobile_vit_small as create_model
 from utils import read_split_data, train_one_epoch, evaluate
 import matplotlib.pyplot as plt
@@ -49,12 +48,10 @@ def main(args):
                                    transforms.ToTensor(),
                                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])}
 
-    # 实例化训练数据集
     train_dataset = MyDataSet(images_path=train_images_path,
                               images_class=train_images_label,
                               transform=data_transform["train"])
 
-    # 实例化验证数据集
     val_dataset = MyDataSet(images_path=val_images_path,
                             images_class=val_images_label,
                             transform=data_transform["val"])
@@ -78,7 +75,6 @@ def main(args):
 
 
     model = create_model(num_classes=args.num_classes).to(device)
-
     if args.weights != "":
         assert os.path.exists(args.weights), "weights file: '{}' not exist.".format(args.weights)
         weights_dict = torch.load(args.weights, map_location=device)
@@ -86,7 +82,6 @@ def main(args):
 
     pg = [p for p in model.parameters() if p.requires_grad]
     optimizer = optim.AdamW(pg, lr=args.lr)  # , weight_decay=1E-2)
-
     best_acc = 0.0
     train_loss_list = []
     train_acc_list = []
@@ -149,22 +144,19 @@ def main(args):
 
     plt.legend()
     plt.show()
-    
+
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--num_classes', type=int, default=)
-    parser.add_argument('--epochs', type=int, default=)
-    parser.add_argument('--batch-size', type=int, default=)
-    parser.add_argument('--lr', type=float, default=)
-    # 数据集所在根目录
-    # https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz
+    parser.add_argument('--num_classes', type=int, default=3)
+    parser.add_argument('--epochs', type=int, default=100)
+    parser.add_argument('--batch-size', type=int, default=16)
+    parser.add_argument('--lr', type=float, default=0.00005)
     parser.add_argument('--data-path', type=str,
-                        default=r'')
-    # 预训练权重路径，如果不想载入就设置为空字符
+                        default=r'D:\pycharmproject\YMQ\san')
     parser.add_argument('--weights', type=str, default='',
-
                         help='initial weights path')
-    # 是否冻结权重
     # parser.add_argument('--freeze-layers', type=bool, default=False)#True将冻结所有权重
     parser.add_argument('--device', default='cuda:0', help='device id (i.e. 0 or 0,1 or cpu)')
     opt = parser.parse_args()
