@@ -1,12 +1,15 @@
 import os
 import json
+
 import torch
 from torchvision import transforms, datasets
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from prettytable import PrettyTable
+
 from model import mobile_vit_small
+
 
 class ConfusionMatrix(object):
 
@@ -78,19 +81,19 @@ if __name__ == '__main__':
                                          transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
     data_root = os.path.abspath(os.path.join(os.getcwd(), "../.."))  # get data root path
-    image_path = os.path.join(data_root, r"     ")  # flower data set path
+    image_path = os.path.join(data_root, r"D:\pycharmproject\YMQ\sandata")  # flower data set path
     assert os.path.exists(image_path), "data path {} does not exist.".format(image_path)
 
-    validate_dataset = datasets.ImageFolder(root=os.path.join(image_path, "val"),  #val or train
+    validate_dataset = datasets.ImageFolder(root=os.path.join(image_path, "val"),
                                             transform=data_transform)
 
-    batch_size = 
+    batch_size = 16
     validate_loader = torch.utils.data.DataLoader(validate_dataset,
                                                   batch_size=batch_size, shuffle=False,
                                                   num_workers=2)
-    net = mobile_vit_small(num_classes= )
+    net = mobile_vit_small(num_classes=3)
     # load pretrain weights
-    model_weight_path = r"       .pth"
+    model_weight_path = r"D:\pycharmproject\YMQ\MobileViT\weights\best_model.pth"
     assert os.path.exists(model_weight_path), "cannot find {} file".format(model_weight_path)
     net.load_state_dict(torch.load(model_weight_path, map_location=device))
     net.to(device)
@@ -102,7 +105,7 @@ if __name__ == '__main__':
     class_indict = json.load(json_file)
 
     labels = [label for _, label in class_indict.items()]
-    confusion = ConfusionMatrix(num_classes=  , labels=labels)
+    confusion = ConfusionMatrix(num_classes=3, labels=labels)
     net.eval()
     with torch.no_grad():
         for val_data in tqdm(validate_loader):
