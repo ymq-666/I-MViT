@@ -248,7 +248,7 @@ class MobileViTBlock(nn.Module):
         )
 
         self.local_rep = nn.Sequential()
-        self.local_rep.add_module(name="conv_3x3", module=conv_3x3_in)
+        self.local_rep.add_module(name="conv_3x3", module=conv_3x3_in)#using DWconv
         self.local_repe = nn.Sequential()
         self.local_repe.add_module(name="conv_1x1", module=conv_1x1_in)
 
@@ -270,7 +270,7 @@ class MobileViTBlock(nn.Module):
         self.global_rep = nn.Sequential(*global_rep)
 
         self.conv_proj = conv_1x1_out
-        self.fusion = conv_3x3_out
+        self.fusion = conv_3x3_out  #using DWconv
 
         self.patch_h = patch_h
         self.patch_w = patch_w
@@ -361,7 +361,7 @@ class MobileViTBlock(nn.Module):
     def forward(self, x: Tensor) -> Tensor:
 
         res = x
-        re = self.local_rep(x) #局部特征信息
+        re = self.local_rep(x) #局部特征信息,local features
         fm = self.local_repe(re)
         # convert feature map to patches
         patches, info_dict = self.unfolding(fm)
